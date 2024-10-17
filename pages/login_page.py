@@ -82,7 +82,13 @@ class LoginPage(Base):
 
         # проверка
         print('Проверка авторизации')
-        self.assert_word(self.get_word_to_check_log_in, 'Личный кабинет')
+        try:
+            error = '//ul[@class="errorlist"]'
+            wait = WebDriverWait(self._driver, 10)
+            wait.until(EC.visibility_of_element_located((By.XPATH, error)))
+            raise ValueError(f'Неверный телефон/почта или пароль')
+        except TimeoutException:
+            self.assert_word(self.get_word_to_check_log_in, 'Личный кабинет')
         print('Авторизация успешно пройдена')
 
         self.go_to_main_page()

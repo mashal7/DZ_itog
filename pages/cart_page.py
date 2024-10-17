@@ -16,10 +16,10 @@ class CartPage(Base):
 
     # ----------------------------------Locators----------------------------------
 
-    button_cart = '//a[@href="/cart/"]'
-    price = '//span[@class="price price--sm price--ruble cartBoxList__price"]'
-    author = '//p["data-v-6c0c2814"]'
-    button_place_order = '//a[@class="btn btn--primary btn--fullWidth btn-next-loading cartBox__button-dekstop"]'
+    button_cart = '//a[@href="/cart/"]'                                             # кнопка Корзина
+    price = '//span[@class="price price--sm price--ruble cartBoxList__price"]'      # цена книги для сверки
+    author = '//p["data-v-6c0c2814"]'                                               # автор книги для сверки
+    button_place_order = '//a[@class="btn btn--primary btn--fullWidth btn-next-loading cartBox__button-dekstop"]'   # кнопка для оформления заказа
 
     # -----------------------------Getters----------------------------------------
     @property
@@ -29,16 +29,19 @@ class CartPage(Base):
 
     @property
     def get_author(self):
+        # автор книги для сверки
         wait = WebDriverWait(self._driver, 10)
         return wait.until(EC.element_to_be_clickable((By.XPATH, self.author)))
 
     @property
     def get_price(self):
+        # цена книги для сверки
         wait = WebDriverWait(self._driver, 10)
         return wait.until(EC.element_to_be_clickable((By.XPATH, self.price)))
 
     @property
     def get_button_place_order(self):
+        # кнопка для оформления заказа
         wait = WebDriverWait(self._driver, 10)
         return wait.until(EC.element_to_be_clickable((By.XPATH, self.button_place_order)))
 
@@ -55,8 +58,9 @@ class CartPage(Base):
     # ----------------------------Methods----------------------------------
 
     def check_author_price(self, expect_author, expect_price):
-        '''Вход в корзину и сверка автора и цены в корзине и каталоге'''
+        '''Вход в корзину и сверка автора и цены в корзине и каталоге, проверка url'''
 
+        # переходим в корзину, сверяем url
         self.click_button_cart()
         self.get_current_url()
         self.assert_url('https://fkniga.ru/cart/')
@@ -66,9 +70,12 @@ class CartPage(Base):
         self.assert_word(self.get_author, expect_author)
         self.assert_word(self.get_price, expect_price)
         print('Автор и цена указаны верно')
+
+        # переходим в оформление заказа, проверяем url
         self.click_button_place_order()
+        #self.wait_load_widget()  - если есть виджет
+        time.sleep(7)
         self.get_current_url()
-        self.wait_load_widget()
         self.assert_url('https://fkniga.ru/cart/order/')
         print('Страница оформления заказа верна')
 

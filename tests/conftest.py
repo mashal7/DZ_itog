@@ -1,10 +1,12 @@
+import time
+
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
 @pytest.fixture()
-def set_up():
+def driver():
     print('Enter browser')
 
     options = webdriver.ChromeOptions()
@@ -24,5 +26,6 @@ def set_up():
     url = 'https://fkniga.ru/'
     driver.get(url)
     yield driver
-    #driver.quit()
+    time.sleep(3)
+    driver.quit()
     print('Close browser')
