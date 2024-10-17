@@ -77,6 +77,7 @@ class CartPage(Base):
         time.sleep(7)
         self.get_current_url()
         self.assert_url('https://fkniga.ru/cart/order/')
+        self.get_screenshot()
         print('Страница оформления заказа верна')
 
 

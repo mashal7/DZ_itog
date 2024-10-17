@@ -1,6 +1,7 @@
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
+from datetime import datetime
 
 class Base:
     '''Базовый класс, содержит универсальные методы'''
@@ -44,6 +45,14 @@ class Base:
         widget = '//div[@class="b24-widget-button-inner-container"]'
         wait = WebDriverWait(self._driver, 20)
         wait.until(EC.element_to_be_clickable((By.XPATH, widget)))
+
+    def get_screenshot(self):
+        '''Метод для получения скриншота'''
+
+        now_date = datetime.now().strftime("%Y.%m.%d-%H.%M.%S")
+        name_screenshot = f"screenshot{now_date}.png"
+        self._driver.save_screenshot(f"screen/{name_screenshot}")
+        print("Скриншот выполнен")
 
 
 
