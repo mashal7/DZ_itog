@@ -12,45 +12,49 @@ class LoginPage(Base):
     def __init__(self, driver):
         super().__init__(driver)
 
-    # Locators
-    log_in_button = '//a[@class="btn btn--controlMain btn-auth"]'
-    mail = '//input[@name="phone_or_email"]'
-    password = '//input[@name="password"]'
-    enter_button = '//button[@class="btn btn--primary btn--height60 btn--fullWidth"]'
-    word_to_check_log_in ='//h1[@class="main__title title title--48"]'
+    # ----------------------------Locators----------------------------
+    log_in_button = '//a[@class="btn btn--controlMain btn-auth"]'   # кнопка авторизации
+    mail = '//input[@name="phone_or_email"]'                        # ввод почты
+    password = '//input[@name="password"]'                          # ввод пароля
+    enter_button = '//button[@class="btn btn--primary btn--height60 btn--fullWidth"]'   # кнопка входа
+    word_to_check_log_in ='//h1[@class="main__title title title--48"]'          # слово для проверки авторизации
 
 
-    # Getters
+    # ----------------------------Getters----------------------------
     @property
     def get_log_in_button(self):
+        # кнопка авторизации
         wait = WebDriverWait(self._driver, 60)
         return wait.until(EC.element_to_be_clickable((By.XPATH, self.log_in_button)))
 
     @property
     def get_mail(self):
+        # ввод почты
         wait = WebDriverWait(self._driver, 10)
         return wait.until(EC.element_to_be_clickable((By.XPATH, self.mail)))
 
     @property
     def get_password(self):
+        # ввод пароля
         wait = WebDriverWait(self._driver, 10)
         return wait.until(EC.element_to_be_clickable((By.XPATH, self.password)))
 
     @property
     def get_enter_button(self):
+        # кнопка входа
         wait = WebDriverWait(self._driver, 10)
         return wait.until(EC.element_to_be_clickable((By.XPATH, self.enter_button)))
 
     @property
     def get_word_to_check_log_in(self):
+        # слово для проверки авторизации
         wait = WebDriverWait(self._driver, 10)
         return wait.until(EC.visibility_of_element_located((By.XPATH, self.word_to_check_log_in)))
 
-    # Actions
+    # ----------------------------Actions----------------------------
     def click_log_in_button(self):
         self.get_log_in_button.click()
         print('Переход в окно авторизации')
-        time.sleep(5)
 
     def input_mail(self, mail):
         self.get_mail.send_keys(mail)
@@ -65,7 +69,7 @@ class LoginPage(Base):
         print('Вход в личный кабинет')
 
 
-    # Methods
+    # ----------------------------Methods----------------------------
     # авторизация в системе
     def log_in(self, mail, password):
 
@@ -77,6 +81,7 @@ class LoginPage(Base):
         self.click_enter_button()
 
         # проверка
+        print('Проверка авторизации')
         self.assert_word(self.get_word_to_check_log_in, 'Личный кабинет')
         print('Авторизация успешно пройдена')
 
